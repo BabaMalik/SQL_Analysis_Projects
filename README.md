@@ -56,10 +56,10 @@ The dataset consists of **orders, pizza details, pizza types, and sales transact
 3. Get the total revenue from all pizza sales. ✅  
 4. Identify the highest-priced pizza. ✅  
 5. Find the most common pizza size ordered. ✅  
-6. Retrieve the names of all unique pizza types available. ⏳ Pending    
-7. Count the number of orders placed per year. ⏳ Pending  
-8. Identify the top 5 most ordered pizza types by quantity.  ⏳ Pending  
-9. List all pizzas along with their sizes and prices. ⏳ Pending  
+6. Retrieve the names of all unique pizza types available. ✅  
+7. Count the number of orders placed per year. ✅  
+8. Identify the top 5 most ordered pizza types by quantity. ✅  
+9. List all pizzas along with their sizes and prices. ✅  
 10. Find the pizza with the lowest price. ⏳ Pending  
 11. Retrieve the names of pizzas containing "Cheese" in their ingredients. ⏳ Pending  
 12. Count the total number of pizza orders for each day of the week. ⏳ Pending  
@@ -71,7 +71,7 @@ The dataset consists of **orders, pizza details, pizza types, and sales transact
 
 ### **🔹 Intermediate SQL Queries (Completed ✅ & Pending ⏳)**  
 1. Identify the top 3 most expensive pizzas. ✅
-2. Identify the top 5 most ordered pizza types by quantity. ✅
+2. Identify the top 5 most ordered pizza types by quantity. ✅ 
 3. Determine the number of orders placed during each hour of the day. ✅  
 4. Calculate the average order quantity per order. ✅  
 5. Find the distribution of pizza categories across all orders. ✅  
@@ -146,41 +146,105 @@ The dataset consists of **orders, pizza details, pizza types, and sales transact
 
 ---
 
-### **🔹 Intermediate SQL Queries**  
-1. Identify the top 5 most ordered pizza types by quantity.  
+### **🔹 Intermediate SQL Queries**
+1. Identify the top 3 most expensive pizzas.
    ```sql
-   SELECT pizza_types.name, SUM(order_details.quantity) AS quantity
+   select 
+	   pizzas.pizza_id, 
+      pizza_types.name, 
+      pizzas.price as costly_pizza
+   from pizza_types
+   join pizzas on pizza_types.pizza_type_id = pizzas.pizza_type_id
+   order by costly_pizza desc 
+   limit 3;
+   ``` 
+2. Identify the top 5 most ordered pizza types by quantity.  
+   ```sql
+   SELECT
+      pizza_types.name,
+      SUM(order_details.quantity) AS quantity
    FROM pizza_types
    JOIN pizzas ON pizza_types.pizza_type_id = pizzas.pizza_type_id
    JOIN order_details ON order_details.pizza_id = pizzas.pizza_id
-   GROUP BY pizza_types.name ORDER BY quantity DESC LIMIT 5;
+   GROUP BY pizza_types.name
+   ORDER BY quantity
+   DESC LIMIT 5;
    ```  
-2. Determine the number of orders placed during each hour of the day.  
+3. Determine the number of orders placed during each hour of the day.  
    ```sql
    SELECT HOUR(time) AS hour, COUNT(order_id) AS order_count
    FROM orders
    GROUP BY HOUR(time);
    ```  
-3. Calculate the average order quantity per order.  
+4. Calculate the average order quantity per order.  
    ```sql
    SELECT ROUND(AVG(quantity),2) AS avg_order_quantity FROM order_details;
-   ```  
-4-15. **Pending Queries** ⏳  
+   ```
+5. Find the distribution of pizza categories across all orders.
+   ```sql
+   SELECT 
+       pizza_types.category AS pizza_category, 
+       SUM(order_details.quantity) AS total_quantity,
+       ROUND((SUM(order_details.quantity) / (SELECT SUM(quantity) FROM order_details)) * 100, 2) AS category_percentage
+   FROM order_details
+   JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id
+   JOIN pizza_types ON pizzas.pizza_type_id = pizza_types.pizza_type_id
+   GROUP BY pizza_types.category
+   ORDER BY total_quantity DESC;
+   ```
+6. Get the total number of pizzas ordered for each day.
+   ```sql
+   SELECT 
+       orders.date, 
+       SUM(order_details.quantity) AS total_pizzas_ordered
+   FROM orders
+   JOIN order_details ON orders.order_id = order_details.order_id
+   GROUP BY orders.date
+   ORDER BY orders.date;
+   ```
+7.  Find the top 3 most popular pizza types based on revenue.
+   ```sql
+   SELECT 
+       pizza_types.name AS pizza_name, 
+       ROUND(SUM(order_details.quantity * pizzas.price), 2) AS total_revenue
+   FROM order_details
+   JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id
+   JOIN pizza_types ON pizzas.pizza_type_id = pizza_types.pizza_type_id
+   GROUP BY pizza_types.name
+   ORDER BY total_revenue DESC
+   LIMIT 3;
+   ```
+8. Find the percentage contribution of each pizza category to total sales.
+   ```sql
+   SELECT 
+    pizza_types.category AS pizza_category, 
+    ROUND(SUM(order_details.quantity * pizzas.price), 2) AS category_revenue,
+    ROUND((SUM(order_details.quantity * pizzas.price) / 
+           (SELECT SUM(order_details.quantity * pizzas.price) 
+            FROM order_details 
+            JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id)) * 100, 2) AS category_percentage
+   FROM order_details
+   JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id
+   JOIN pizza_types ON pizzas.pizza_type_id = pizza_types.pizza_type_id
+   GROUP BY pizza_types.category
+   ORDER BY category_revenue DESC;
+   ```
+9-15. **Pending Queries** ⏳  
 
 ---
 
 ### **🔹 Advanced SQL Queries**  
 1. Calculate the cumulative revenue over time.  
    ```sql
-   SELECT
-       o.date,
-       SUM(od.quantity * p.price) AS daily_revenue,
-       SUM(SUM(od.quantity * p.price)) OVER (ORDER BY o.date) AS cumulative_revenue
-   FROM orders o
-   JOIN order_details od ON o.order_id = od.order_id
-   JOIN pizzas p ON od.pizza_id = p.pizza_id
-   GROUP BY o.date
-   ORDER BY o.date;
+   SELECT 
+       orders.date, 
+       SUM(order_details.quantity * pizzas.price) AS daily_revenue,
+       SUM(SUM(order_details.quantity * pizzas.price)) OVER (ORDER BY orders.date) AS cumulative_revenue
+   FROM orders
+   JOIN order_details ON orders.order_id = order_details.order_id
+   JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id
+   GROUP BY orders.date
+   ORDER BY orders.date;
    ```  
 2. Find the pizza type that contributes the most revenue.  
    ```sql
@@ -192,8 +256,46 @@ The dataset consists of **orders, pizza details, pizza types, and sales transact
    JOIN pizza_types pt ON p.pizza_type_id = pt.pizza_type_id
    GROUP BY pt.name
    ORDER BY total_revenue DESC LIMIT 1;
-   ```  
-3-15. **Pending Queries** ⏳  
+   ```
+ 3. Determine the revenue trend for different pizza sizes.
+    ```sql
+      SELECT 
+          orders.date, 
+          pizzas.size AS pizza_size, 
+          ROUND(SUM(order_details.quantity * pizzas.price), 2) AS total_revenue
+    FROM orders
+    JOIN order_details ON orders.order_id = order_details.order_id
+    JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id
+    GROUP BY orders.date, pizzas.size
+    ORDER BY orders.date, total_revenue DESC;
+    ```
+ 4. Rank pizza categories based on total revenue.
+    ```sql
+    SELECT 
+       pizza_types.category AS pizza_category, 
+       ROUND(SUM(order_details.quantity * pizzas.price), 2) AS total_revenue,
+       RANK() OVER (ORDER BY SUM(order_details.quantity * pizzas.price) DESC) AS revenue_rank
+    FROM order_details
+    JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id
+    JOIN pizza_types ON pizzas.pizza_type_id = pizza_types.pizza_type_id
+    GROUP BY pizza_types.category;
+    ```
+ 5. Find the percentage contribution of each pizza type to the total revenue.
+ ```sql
+    SELECT 
+       pizza_types.name AS pizza_name, 
+       ROUND(SUM(order_details.quantity * pizzas.price), 2) AS pizza_revenue,
+       ROUND((SUM(order_details.quantity * pizzas.price) / 
+              (SELECT SUM(order_details.quantity * pizzas.price) 
+               FROM order_details 
+               JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id)) * 100, 2) AS revenue_percentage
+      FROM order_details
+   JOIN pizzas ON order_details.pizza_id = pizzas.pizza_id
+   JOIN pizza_types ON pizzas.pizza_type_id = pizza_types.pizza_type_id
+   GROUP BY pizza_types.name
+   ORDER BY pizza_revenue DESC;
+   ```
+6-15. **Pending Queries** ⏳  
 
 ---
 
