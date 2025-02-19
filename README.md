@@ -56,10 +56,10 @@ The dataset consists of **orders, pizza details, pizza types, and sales transact
 3. Get the total revenue from all pizza sales. ✅  
 4. Identify the highest-priced pizza. ✅  
 5. Find the most common pizza size ordered. ✅  
-6. Retrieve the names of all unique pizza types available. ✅  
-7. Count the number of orders placed per year. ✅  
-8. Identify the top 5 most ordered pizza types by quantity. ✅  
-9. List all pizzas along with their sizes and prices. ✅  
+6. Retrieve the names of all unique pizza types available. ⏳ Pending    
+7. Count the number of orders placed per year. ⏳ Pending  
+8. Identify the top 5 most ordered pizza types by quantity.  ⏳ Pending  
+9. List all pizzas along with their sizes and prices. ⏳ Pending  
 10. Find the pizza with the lowest price. ⏳ Pending  
 11. Retrieve the names of pizzas containing "Cheese" in their ingredients. ⏳ Pending  
 12. Count the total number of pizza orders for each day of the week. ⏳ Pending  
@@ -70,21 +70,22 @@ The dataset consists of **orders, pizza details, pizza types, and sales transact
 ---
 
 ### **🔹 Intermediate SQL Queries (Completed ✅ & Pending ⏳)**  
-1. Identify the top 3 most expensive pizzas. ✅  
-2. Determine the number of orders placed during each hour of the day. ✅  
-3. Calculate the average order quantity per order. ✅  
-4. Find the distribution of pizza categories across all orders. ✅  
-5. Get the total number of pizzas ordered for each day. ✅  
-6. Find the top 3 most popular pizza types based on revenue. ✅  
-7. Find the percentage contribution of each pizza category to total sales. ✅  
-8. Identify which pizza category generated the highest revenue. ⏳ Pending  
-9. Find the revenue trend for the last 6 months. ⏳ Pending  
-10. Determine the customer’s favorite pizza size over time. ⏳ Pending  
-11. Rank the pizzas based on sales quantity. ⏳ Pending  
-12. Find the most common order time (morning, afternoon, evening, night). ⏳ Pending  
-13. Identify the day of the week with the highest sales. ⏳ Pending  
-14. Analyze revenue trends based on pizza size. ⏳ Pending  
-15. Retrieve the name of the least ordered pizza type. ⏳ Pending  
+1. Identify the top 3 most expensive pizzas. ✅
+2. Identify the top 5 most ordered pizza types by quantity. ✅
+3. Determine the number of orders placed during each hour of the day. ✅  
+4. Calculate the average order quantity per order. ✅  
+5. Find the distribution of pizza categories across all orders. ✅  
+6. Get the total number of pizzas ordered for each day. ✅  
+7. Find the top 3 most popular pizza types based on revenue. ✅  
+8. Find the percentage contribution of each pizza category to total sales. ✅  
+9. Identify which pizza category generated the highest revenue. ⏳ Pending  
+10. Find the revenue trend for the last 6 months. ⏳ Pending  
+11. Determine the customer’s favorite pizza size over time. ⏳ Pending  
+12. Rank the pizzas based on sales quantity. ⏳ Pending  
+13. Find the most common order time (morning, afternoon, evening, night). ⏳ Pending  
+14. Identify the day of the week with the highest sales. ⏳ Pending  
+15. Analyze revenue trends based on pizza size. ⏳ Pending  
+16. Retrieve the name of the least ordered pizza type. ⏳ Pending  
 
 ---
 
