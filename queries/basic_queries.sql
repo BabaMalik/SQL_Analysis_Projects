@@ -1,5 +1,8 @@
 -- 🔹 Basic SQL Queries
+
 -- Retrieve the total number of distinct orders. 
+
+
 
 SELECT COUNT(DISTINCT order_id) FROM orders;
 
